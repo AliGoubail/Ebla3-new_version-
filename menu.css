@@ -183,6 +183,7 @@ body{
     background-color: transparent;
     color: var(--secondary-text);
     border: 2px solid var(--secondary-text);
+    
 }
 .price {
     color: var(--secondary-text);
