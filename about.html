@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ebla3 — About</title>
+  <link rel="stylesheet" href="about.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    .pic img { width:200px; height:200px; object-fit:cover; border-radius:50%; }
+    .pic-container { gap:80px; flex-wrap:wrap; }
+    .pic { width:220px; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo"><a class="main-btn" href="ebla3.html">Foodie</a></div>
+  <div class="nav">
+    <a class="second-btn" href="ebla3.html">Home</a>
+    <a class="second-btn" href="menu.html">Menu</a>
+    <a class="main-btn"   href="about.html">About</a>
+    <a class="second-btn" href="contact_us.html">Contact us</a>
+  </div>
+  <div class="cart-button" style="display:flex;align-items:center;gap:10px">
+    <span id="userGreeting"></span>
+    <a class="second-btn" id="authNavBtn" onclick="openLoginModal()">Sign In</a>
+    <a class="second-btn" id="logoutNavBtn" style="display:none" onclick="handleLogout()">Logout</a>
+    <button class="cart-btn" onclick="toggleCart()">
+      <ion-icon name="cart-outline"></ion-icon>
+      <span class="cart-badge" id="cart-badge">0</span>
+    </button>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="about">
+  <h1>About Us</h1>
+  <p>Welcome to our restaurant! We are dedicated to providing the best dining experience with fresh, high-quality ingredients and exceptional service.</p>
+</div>
+
+<!-- TEAM -->
+<div class="our-team"><h2>Our Team</h2></div>
+
+<div class="pic-container">
+  <div class="pic">
+    <img src="..\contactusimgs\1738213028287.jpeg" onerror="this.src='https://ui-avatars.com/api/?name=Ali+Goubail&background=0c1429&color=0bb47e&size=200'" alt="Ali">
+    <span>Ali Goubail</span>
+    <span>Front-end Developer</span>
+    <a href="https://www.linkedin.com/in/ali-goubail-54055b349/" target="_blank">LinkedIn</a>
+  </div>
+  <div class="pic">
+    <img src="\contactusimgs\WhatsApp Image 2026-05-15 at 8.25.20 PM.jpeg" onerror="this.src='https://ui-avatars.com/api/?name=Mohamed+Hassan&background=0c1429&color=0bb47e&size=200'" alt="Mohamed">
+    <span>Mohamed Hassan</span>
+    <span>Front-end Developer</span>
+    <a href="https://www.linkedin.com/in/mohamed-hassan-54055b349/" target="_blank">LinkedIn</a>
+  </div>
+</div>
+
+<div class="pic-container" style="margin-top:40px">
+  <div class="pic">
+    <img src="..\contactusimgs\WhatsApp Image 2026-05-15 at 8.25.20 PM.jpeg" onerror="this.src='https://ui-avatars.com/api/?name=Abdelerahman+Hassan&background=0c1429&color=0bb47e&size=200'" alt="Abdelerahman">
+    <span>Abdelerahman Hassan</span>
+    <span>Back-end Developer</span>
+    <a href="https://www.linkedin.com/in/abdelerahman-hassan-54055b349/" target="_blank">LinkedIn</a>
+  </div>
+  <div class="pic">
+    <img src="\contactusimgs\1738213028287.jpeg" onerror="this.src='https://ui-avatars.com/api/?name=Moaz+Ibrahem&background=0c1429&color=0bb47e&size=200'" alt="Moaz">
+    <span>Moaz Ibrahem</span>
+    <span>Back-end Developer</span>
+    <a href="https://www.linkedin.com/in/moaz-ibrahem-54055b349/" target="_blank">LinkedIn</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="logo"><a class="main-btn" href="#">Foodie</a></div>
+  <div class="quick-links">
+    <a class="main-btn" href="#">Quick Links</a>
+    <a class="second-btn" href="ebla3.html">Home</a>
+    <a class="second-btn" href="menu.html">Menu</a>
+    <a class="second-btn" href="about.html">About</a>
+    <a class="second-btn" href="contact_us.html">Contact us</a>
+  </div>
+  <div class="social-media">
+    <p class="main-btn">Follow us</p>
+    <a class="second-btn" href="#"><ion-icon name="logo-facebook"></ion-icon></a>
+    <a class="second-btn" href="#"><ion-icon name="logo-instagram"></ion-icon></a>
+    <a class="second-btn" href="#"><ion-icon name="logo-twitter"></ion-icon></a>
+  </div>
+  <!-- <div class="contact-info">
+    <a class="main-btn" href="#">Contact us</a>
+    <p class="second-btn">Email: info@ebla3.com</p>
+    <p class="second-btn">Phone: 123-456-7890</p>
+  </div> -->
+</div>
+<div class="copyright"><p>&copy; 2026 Foodie. All rights reserved.</p></div>
+
+<script src="ebla3-api.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  initCartDrawer();
+  updateHeaderAuth();
+  if (Auth.isLoggedIn()) loadCart();
+});
+</script>
+</body>
+</html>

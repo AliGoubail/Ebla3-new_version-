@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ebla3 — Menu</title>
+  <link rel="stylesheet" href="menu.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    .category button.active{background:transparent;color:#00D492;border:2px solid #00D492;}
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo"><a class="main-btn" href="ebla3.html">Foodie</a></div>
+  <div class="nav">
+    <a class="second-btn" href="ebla3.html">Home</a>
+    <a class="main-btn"   href="menu.html">Menu</a>
+    <a class="second-btn" href="about.html">About</a>
+    <a class="second-btn" href="contact_us.html">Contact us</a>
+  </div>
+  <div class="cart-button" style="display:flex;align-items:center;gap:10px">
+    <span id="userGreeting"></span>
+    <a class="second-btn" id="authNavBtn" onclick="openLoginModal()">Sign In</a>
+    <a class="second-btn" id="logoutNavBtn" style="display:none" onclick="handleLogout()">Logout</a>
+    <button class="cart-btn" onclick="toggleCart()">
+        <ion-icon name="cart-outline"></ion-icon>
+        <span class="cart-badge" id="cart-badge">0</span>
+    </button>
+    
+  </div>
+</div>
+
+<!-- MENU SECTION -->
+<section class="menu-section">
+  <h1>Our Menu</h1>
+  <p>Explore our carefully crafted dishes</p>
+  <div class="search">
+    <input id="searchInput" placeholder="Search..." oninput="handleSearch()"/>
+    <button class="search_btn" onclick="handleSearch()">Search</button>
+  </div>
+  <div class="category" id="catRow">
+    <button class="active" onclick="filterCat(null, this)">All</button>
+  </div>
+  <div class="menu-grid" id="menuGrid">
+    <div class="spinner-wrap"><div class="spinner"></div></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="logo"><a class="main-btn" href="#">Foodie</a></div>
+  <div class="quick-links">
+    <a class="main-btn" href="#">Quick Links</a>
+    <a class="second-btn" href="ebla3.html">Home</a>
+    <a class="second-btn" href="menu.html">Menu</a>
+    <a class="second-btn" href="about.html">About</a>
+    <a class="second-btn" href="contact_us.html">Contact us</a>
+  </div>
+  <div class="social-media">
+    <p class="main-btn">Follow us</p>
+    <a class="second-btn" href="#"><ion-icon name="logo-facebook"></ion-icon></a>
+    <a class="second-btn" href="#"><ion-icon name="logo-instagram"></ion-icon></a>
+    <a class="second-btn" href="#"><ion-icon name="logo-twitter"></ion-icon></a>
+  </div>
+  <!-- <div class="contact-info">
+    <a class="main-btn" href="#">Contact us</a>
+    <p class="second-btn">Email: info@ebla3.com</p>
+    <p class="second-btn">Phone: 123-456-7890</p>
+  </div> -->
+</div>
+<div class="copyright"><p>&copy; 2026 Foodie. All rights reserved.</p></div>
+
+<script src="ebla3-api.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script>
+let activeCat = null, searchTimer;
+
+document.addEventListener('DOMContentLoaded', () => {
+  initCartDrawer();
+  updateHeaderAuth();
+  loadCategories();
+  loadMenuItems();
+  if (Auth.isLoggedIn()) loadCart();
+});
+
+async function loadCategories() {
+  try {
+    const data = await MenuAPI.categories();
+    const row  = document.getElementById('catRow');
+    (data.results || data).forEach(c => {
+      const b = document.createElement('button');
+      b.textContent = c.name;
+      b.onclick = () => filterCat(c.slug, b);
+      row.appendChild(b);
+    });
+  } catch(e) {}
+}
+
+function filterCat(slug, btn) {
+  document.querySelectorAll('.category button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeCat = slug;
+  loadMenuItems();
+}
+
+async function loadMenuItems() {
+  const grid = document.getElementById('menuGrid');
+  grid.innerHTML = '<div class="spinner-wrap"><div class="spinner"></div></div>';
+  const params = {};
+  if (activeCat) params.slug = activeCat;
+  const q = document.getElementById('searchInput').value.trim();
+  if (q) params.search = q;
+  try {
+    const data  = await MenuAPI.items(params);
+    const items = data.results || data;
+    if (!items.length) {
+      grid.innerHTML = '<p style="grid-column:1/-1;color:rgb(195,209,226);text-align:center;padding:3rem">No items found.</p>';
+      return;
+    }
+    grid.innerHTML = items.map(item => `
+      <div class="menu-card">
+        <img src="${item.image_display || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400'}"
+             onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400'" alt="${item.name}">
+        <div class="menu-content">
+          <div class="menu-header">
+            <h3>${item.name}</h3>
+            <span class="price">$${parseFloat(item.price).toFixed(2)}</span>
+          </div>
+          <p>${item.description || 'Freshly prepared for you.'}</p>
+          <button class="add-btn" onclick="addToCart(${item.id}, '${item.name.replace(/'/g,"\\'")}')">+ Add to Cart</button>
+        </div>
+      </div>`).join('');
+  } catch(e) {
+    grid.innerHTML = '<p style="grid-column:1/-1;color:#e74c3c;text-align:center;padding:3rem">Could not load menu. Is Django running on port 8000?</p>';
+  }
+}
+
+function handleSearch() {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(loadMenuItems, 400);
+}
+</script>
+</body>
+</html>

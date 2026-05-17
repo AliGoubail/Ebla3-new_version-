@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ebla3</title>
+  <link rel="stylesheet" href="ebla3.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo"><a class="main-btn" href="ebla3.html">Foodie</a></div>
+  <div class="nav">
+    <a class="main-btn"  href="ebla3.html">Home</a>
+    <a class="second-btn" href="menu.html">Menu</a>
+    <a class="second-btn" href="about.html">About</a>
+    <a class="second-btn" href="contact_us.html">Contact Us</a>
+  </div>
+  <div class="cart-button">
+    <span id="userGreeting"></span>
+
+    <a class="sign-in" id="authNavBtn" onclick="openLoginModal()">
+        Sign In
+    </a>
+
+    <a class="sign-in" id="logoutNavBtn" onclick="handleLogout()">
+        Logout
+    </a>
+
+    <button class="cart-btn" onclick="toggleCart()">
+        <ion-icon name="cart-outline"></ion-icon>
+        <span class="cart-badge" id="cart-badge">0</span>
+    </button>
+</div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Experience fine dining</h1>
+    <h2>at your doorstep</h2>
+    <p>Savor the finest culinary creations from our award-winning chefs<br>, delivered fresh to your home with elegance and care.</p>
+    <button class="btn primary" onclick="window.location.href='menu.html'">Order Now</button>
+    <button class="btn secondary" onclick="document.querySelector('.description').scrollIntoView({behavior:'smooth'})">Learn More</button>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<div class="description">
+  <div class="features">
+    <div class="icon-box"><i data-lucide="star"></i></div>
+    <h3>Premium Quality</h3>
+    <p>Only the finest ingredients from trusted suppliers</p>
+  </div>
+  <div class="features">
+    <div class="icon-box"><i data-lucide="clock"></i></div>
+    <h3>Fast Delivery</h3>
+    <p>Hot and fresh meals delivered in 30-45 minutes</p>
+  </div>
+  <div class="features">
+    <div class="icon-box"><i data-lucide="truck"></i></div>
+    <h3>Free Shipping</h3>
+    <p>On all orders over $50 within the city</p>
+  </div>
+</div>
+
+<!-- FEATURED DISHES -->
+<div class="featured-dishes">
+  <h3>Featured Dishes</h3>
+  <p>Handpicked selections from our award-winning menu</p>
+  <div class="dish-container" id="featuredDishes">
+    <p style="color:rgb(195,209,226);padding:2rem">Loading dishes…</p>
+  </div>
+  <a href="menu.html">View Full Menu</a>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="logo"><a class="main-btn" href="#">Foodie</a></div>
+  <div class="quick-links">
+    <a class="main-btn" href="#">Quick Links</a>
+    <a class="second-btn" href="ebla3.html">Home</a>
+    <a class="second-btn" href="menu.html">Menu</a>
+    <a class="second-btn" href="about.html">About</a>
+    <a class="second-btn" href="contact_us.html">Contact us</a>
+  </div>
+  <div class="social-media">
+    <p class="main-btn">Follow us</p>
+    <a class="second-btn" href="#"><ion-icon name="logo-facebook"></ion-icon></a>
+    <a class="second-btn" href="#"><ion-icon name="logo-instagram"></ion-icon></a>
+    <a class="second-btn" href="#"><ion-icon name="logo-twitter"></ion-icon></a>
+  </div>
+  <!-- <div class="contact-info">
+    <a class="main-btn" href="#">Contact us</a>
+    <p class="second-btn">Email: info@ebla3.com</p>
+    <p class="second-btn">Phone: 123-456-7890</p>
+  </div> -->
+</div>
+<div class="copyright"><p>&copy; 2026 Foodie. All rights reserved.</p></div>
+
+<script src="ebla3-api.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  lucide.createIcons();
+  initCartDrawer();
+  updateHeaderAuth();
+  loadFeaturedDishes();
+  if (Auth.isLoggedIn()) loadCart();
+});
+
+async function loadFeaturedDishes() {
+  try {
+    const data  = await MenuAPI.items();
+    const items = (data.results || data).slice(0, 3);
+    document.getElementById('featuredDishes').innerHTML = items.map(item => `
+      <div class="dish-card">
+        <img src="${item.image_display || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400'}"
+             onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400'" alt="${item.name}">
+        <div class="dish-content">
+          <h4>${item.name}</h4>
+          <p>${item.description || ''}</p>
+          <span class="price">$${parseFloat(item.price).toFixed(2)}</span>
+        </div>
+        <button class="btn primary" onclick="addToCart(${item.id}, '${item.name.replace(/'/g,"\\'")}')">+ Add to Cart</button>
+      </div>`).join('');
+  } catch(e) {
+    document.getElementById('featuredDishes').innerHTML =
+      '<p style="color:#e74c3c;padding:2rem">Could not load dishes. Make sure Django is running on port 8000.</p>';
+  }
+}
+</script>
+</body>
+</html>
