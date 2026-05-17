@@ -55,22 +55,63 @@ body{
 
 
 
-.cart-button ion-icon {
-    background-color: var(--secondary-color);
-    padding: 10px;
-    color: var(--primary-text);
-    font-size: 20px;   
-    border: none;
-    outline: none;
-}
+
 .logo {
     /* font-size: 48px; */
     font-weight: bold;
     color: var(--secondary-text);
     text-decoration: none;
     margin-left:90px;
+}
+.sign-in{
+    text-decoration: none;
+    color: var(--primary-text);
+    font-size: 20px;
     
+}
+.sign-in:hover{
+    color: var(--secondary-text);
+}
+.cart-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     
+}
+
+
+.cart-btn {
+    display: flex;
+    gap: 6px;
+    margin-left: 15px;
+    border: none;
+    align-items: center;
+
+}
+
+
+.cart-button ion-icon {
+    background-color: var(--primary-color);
+    padding: 10px;
+    color: var(--primary-text);
+    font-size: 19px;
+    vertical-align: middle;
+    height: 20px;
+    padding-bottom: 15px;
+    border: none;
+    outline: none;
+}
+
+.cart-badge {
+    background-color: var(--secondary-text);
+    color: var(--primary-color);
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 50px;
+}
+.cart-btn:hover {
+    color: var(--secondary-text);
 }
 .hero {
     background-image: url('../images/resturant.jpg');
@@ -272,103 +313,6 @@ body{
     margin-top: 30px;
     margin-bottom: 0px;
 }
-/* Overlay */
-#cart-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.6);
-    opacity: 0;
-    visibility: hidden;
-    transition: 0.3s;
-    z-index: 998;
-}
-
-/* Sidebar */
-#cart-sidebar {
-    position: fixed;
-    top: 0;
-    right: -400px;
-    width: 350px;
-    height: 100%;
-    background: var(--secondary-color);
-    color: var(--primary-text);
-    box-shadow: -5px 0 20px rgba(0,0,0,0.3);
-    transition: 0.4s ease;
-    z-index: 999;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-}
-
-/* Active state */
-#cart-sidebar.active {
-    right: 0;
-}
-
-#cart-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* Header */
-.cart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 10px;
-}
-
-.cart-header h2 {
-    color: var(--secondary-text);
-}
-
-#close-cart {
-    background: none;
-    border: none;
-    font-size: 28px;
-    color: var(--primary-text);
-    cursor: pointer;
-}
-
-/* Cart Items */
-.cart-items {
-    flex: 1;
-    margin-top: 20px;
-    overflow-y: auto;
-}
-
-.empty-cart {
-    color: var(--description-text);
-    text-align: center;
-    margin-top: 50px;
-}
-
-/* Footer */
-.cart-footer {
-    border-top: 1px solid var(--border-color);
-    padding-top: 15px;
-}
-
-.checkout-btn {
-    width: 100%;
-    padding: 12px;
-    background: var(--secondary-text);
-    border: none;
-    border-radius: 8px;
-    color: var(--primary-text);
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.checkout-btn:hover {
-    background: var(--primary-text);
-    color: var(--secondary-text);
-}
 .footer{
     background-color: var(--primary-color);
     color: var(--primary-text);
@@ -429,20 +373,20 @@ body{
 .secondary{
     background-color: var(--primary-text);
     color: var(--secondary-text);
-    border: 1px solid var(--secondary-text);
+    border: 0px solid var(--secondary-text);
 }
 .secondary:hover{
     background-color: var(--secondary-text);
     color: var(--primary-text);
-    border: 1px solid var(--primary-color);
+    border: 0px solid var(--primary-color);
 }
 .main-btn{
     text-decoration: none;
     color: var(--secondary-text);
-    font-size: 20px;
+    font-size: 26px;
     /* margin: 30px; */
     /* margin-top: 40px; */
-    border: 2px solid var(--primary-color);
+    border: 0px solid var(--primary-color);
 }
 /* .main-btn:hover{
     color: var(--primary-text);
@@ -454,11 +398,11 @@ body{
     font-size: 20px;
     /* margin: 30px; */
     /* margin-top: 40px; */
-    border: 2px solid var(--secondary-color);
+    border: 0px solid var(--secondary-color);
 }
 .second-btn:hover{
     color: var(--secondary-text);
-    border: 2px solid var(--secondary-color);
+    border: 0px solid var(--secondary-color);
 }
 
 
